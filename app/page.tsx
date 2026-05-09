@@ -47,9 +47,9 @@ export default function Page() {
           <Hero masterTl={masterTl} />
           <About />
           <HorizontalScroll />
-          {/* <RotatingProjects /> */}
+          <RotatingProjects />
           {/* <ScrollCarousel/> */}
-          <CylinderPortfolio/>
+          {/* <CylinderPortfolio/> */}
           <Swiper/>
           <Footer />
         </>
