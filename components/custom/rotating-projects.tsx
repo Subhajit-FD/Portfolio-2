@@ -35,12 +35,7 @@ type CardShaderUniforms = {
 
 declare module "@react-three/fiber" {
   interface ThreeElements {
-    cardShader: THREE.ShaderMaterial &
-      Partial<CardShaderUniforms> & {
-        ref?: React.Ref<THREE.ShaderMaterial & CardShaderUniforms>;
-        transparent?: boolean;
-        side?: THREE.Side;
-      };
+    cardShader: React.JSX.IntrinsicElements["shaderMaterial"] & Partial<CardShaderUniforms>;
   }
 }
 

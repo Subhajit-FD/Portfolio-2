@@ -80,7 +80,7 @@ export default function Hero({ masterTl }: HeroProps) {
         start: "top top",
         end: "max",
         onUpdate: (self) => {
-          if (self.scrollY === 0 || self.scroll() <= 0) {
+          if (self.scroll() === 0) {
             gsap.to(navbarRef.current, { yPercent: 0, duration: 0.3, ease: "power2.out", overwrite: "auto" });
           } else if (self.direction === 1) {
             gsap.to(navbarRef.current, { yPercent: -100, duration: 0.3, ease: "power2.out", overwrite: "auto" });

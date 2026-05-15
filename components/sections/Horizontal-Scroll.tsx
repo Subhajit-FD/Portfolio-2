@@ -38,21 +38,21 @@ const HorizontalScroll = () => {
         top: "10%",
         left: "25%",
         rotation: -5,
-        width: "clamp(120px, 15vw, 300px)", // Larger and responsive
+        width: "clamp(240px, 15vw, 300px)", // Larger and responsive
       },
       {
         ...SVGs[1],
         top: "75%",
         left: "55%",
         rotation: 2,
-        width: "clamp(180px, 20vw, 400px)", // Larger and responsive
+        width: "clamp(240px, 20vw, 400px)", // Larger and responsive
       },
       {
         ...SVGs[2],
         top: "15%",
         left: "86%",
         rotation: 10,
-        width: "clamp(140px, 18vw, 350px)", // Larger and responsive
+        width: "clamp(240px, 18vw, 350px)", // Larger and responsive
       },
     ].map((svg, i) => ({ ...svg, id: i }));
   }, []);

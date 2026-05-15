@@ -10,8 +10,8 @@ import RotatingProjects from "@/components/custom/rotating-projects";
 import HorizontalScroll from "@/components/sections/Horizontal-Scroll";
 import Swiper from "@/components/custom/swiper";
 import Footer from "@/components/sections/Footer";
-import ScrollCarousel from "@/components/custom/ScrollCarousel";
-import CylinderPortfolio from "@/components/custom/CylinderPortfolio";
+import Project from "@/components/sections/Project";
+
 
 // Register the hook to prevent tree-shaking issues
 gsap.registerPlugin(useGSAP);
@@ -47,9 +47,8 @@ export default function Page() {
           <Hero masterTl={masterTl} />
           <About />
           <HorizontalScroll />
-          <RotatingProjects />
-          {/* <ScrollCarousel/> */}
-          {/* <CylinderPortfolio/> */}
+          {/* <RotatingProjects /> */}
+           <Project/>
           <Swiper/>
           <Footer />
         </>

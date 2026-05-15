@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
 const scrambleChars =
   "▙ ▚ ▞ a k i e d z e k ▝ ▀ ▖ ▜ ▛ ▟ ▙ ▚ ▞ ▝ ▀ ▖ a k i e d z e k";
 
-interface TextScrambleProps {
+export interface TextScrambleProps {
   children: string;
   className?: string;
 }

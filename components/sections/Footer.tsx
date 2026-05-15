@@ -1,12 +1,12 @@
 "use client";
 
-import React from "react";
 import useDateAndTime from "@/lib/useDateAndTime";
 import TextScramble from "@/components/custom/text-scramble";
 import { ArrowUpRightIcon } from "@phosphor-icons/react";
 
 export default function Footer() {
   const { time, year } = useDateAndTime();
+  const currentYear = year.toString();
 
   return (
     <footer className="w-full bg-background text-foreground px-6 py-10 md:px-12 md:py-16 border-t border-border overflow-hidden">
@@ -66,7 +66,7 @@ export default function Footer() {
           
           <div className="w-full md:w-1/3 flex justify-center">
              <TextScramble className="text-[10px] font-mono tracking-widest text-muted-foreground">
-                DEVELOPMENT — {year}
+                {`DEVELOPMENT — ${currentYear}`}
              </TextScramble>
           </div>
 
