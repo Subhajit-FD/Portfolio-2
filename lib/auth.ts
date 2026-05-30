@@ -13,4 +13,7 @@ export const auth = betterAuth({
     minPasswordLength: 6,
     autoSignIn: false
   },
+  advanced: {
+    trustedProxyHeaders: true
+  }
 });

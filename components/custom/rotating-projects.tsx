@@ -133,11 +133,14 @@ function useResponsiveConfig(): ResponsiveValues {
   }, []);
 
   useEffect(() => {
-    update();
+    const timer = setTimeout(update, 0);
     const mediaLists = BREAKPOINTS.map((bp) => window.matchMedia(bp.query));
     const handler = () => update();
     mediaLists.forEach((ml) => ml.addEventListener("change", handler));
-    return () => mediaLists.forEach((ml) => ml.removeEventListener("change", handler));
+    return () => {
+      clearTimeout(timer);
+      mediaLists.forEach((ml) => ml.removeEventListener("change", handler));
+    };
   }, [update]);
 
   return values;
@@ -233,10 +236,9 @@ function CardMesh({
   total,
   radius,
   currentIndex,
-  onSelect,
   cardWidth,
   cardHeight,
-}: CardProps & { tex: THREE.Texture }) {
+}: Omit<CardProps, "onSelect"> & { tex: THREE.Texture }) {
   const mesh = useRef<THREE.Mesh>(null);
   const mat = useRef<THREE.ShaderMaterial & CardShaderUniforms>(null);
   const [hovered, setHovered] = useState(false);
@@ -373,7 +375,9 @@ function Carousel({ projects, onSelect, responsive }: CarouselProps) {
   // Sync camera when responsive breakpoint changes
   useEffect(() => {
     if (camera instanceof THREE.PerspectiveCamera) {
+      // eslint-disable-next-line react-hooks/immutability
       camera.fov = responsive.cameraFov;
+      // eslint-disable-next-line react-hooks/immutability
       camera.position.z = responsive.cameraZ;
       camera.updateProjectionMatrix();
     }

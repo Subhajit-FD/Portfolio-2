@@ -8,8 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
-import { EyeIcon, EyeClosedIcon } from "@phosphor-icons/react";
-import { useRouter } from "next/navigation";
+import { EyeIcon, EyeClosedIcon, Spinner as SpinnerIcon } from "@phosphor-icons/react";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -17,16 +16,17 @@ const formSchema = z.object({
 });
 
 export default function Login() {
-  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
+  const { isSubmitting } = form.formState;
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const { email, password } = values;
-      const { data, error } = await authClient.signIn.email({
+      const { error } = await authClient.signIn.email({
         email: email,
         password: password,
       });
@@ -37,8 +37,8 @@ export default function Login() {
       }
 
       toast.success("Logged in successfully.");
-      router.push("/admin");
-    } catch (error) {
+      window.location.replace("/admin");
+    } catch {
       toast.error("Failed to submit the form. Please try again.");
     }
   }
@@ -85,7 +85,16 @@ export default function Login() {
 
             <FieldError>{form.formState.errors.password?.message}</FieldError>
           </Field>
-          <Button type="submit">Submit</Button>
+          <Button type="submit" disabled={isSubmitting} className="cursor-pointer">
+            {isSubmitting ? (
+              <>
+                <SpinnerIcon className="h-4 w-4 animate-spin mr-2" />
+                <span>Logging in...</span>
+              </>
+            ) : (
+              <span>Submit</span>
+            )}
+          </Button>
         </form>
       </FormProvider>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState, useMemo } from "react";
+import { useRef, useMemo } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -136,9 +136,8 @@ export default function PreviewGrid({ isOpen, onClose, projects = [] }: PreviewG
         );
       });
     } else {
-      itemData.forEach(({ el, dx, dy, dist, isLeft }) => {
+      itemData.forEach(({ el, dy, dist, isLeft }) => {
         const norm = maxDist ? dist / maxDist : 0;
-
         const delay = Math.pow(norm, 1.8) * totalStagger;
         const rotationY = isLeft ? 90 : -90;
 

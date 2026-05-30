@@ -11,6 +11,17 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(SplitText, ScrollTrigger, useGSAP);
 
+interface ProjectItem {
+  _id: string;
+  title: string;
+  liveUrl?: string;
+  githubUrl?: string;
+  mobileImage?: string;
+  desktopImage?: string;
+  featured: boolean;
+  createdAt: string;
+}
+
 export default function Project() {
   const [activePreview, setActivePreview] = useState(false);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -62,7 +73,7 @@ export default function Project() {
     });
   };
 
-  const [projects, setProjects] = useState<any[]>([]);
+  const [projects, setProjects] = useState<ProjectItem[]>([]);
 
   useEffect(() => {
     fetch("/api/projects", { cache: "no-store" })
@@ -77,7 +88,7 @@ export default function Project() {
 
   const carouselProjects = useMemo(() => {
     const featured = projects.filter((p) => p.featured);
-    if (featured.length = 4) {
+    if (featured.length === 4) {
       return featured.slice(0, 4);
     }
     const nonFeatured = projects.filter((p) => !p.featured);

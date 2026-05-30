@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
-import { EyeIcon, EyeClosedIcon } from "@phosphor-icons/react";
+import { EyeIcon, EyeClosedIcon, Spinner as SpinnerIcon } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
@@ -24,10 +24,12 @@ export default function Register() {
     resolver: zodResolver(formSchema),
   });
 
+  const { isSubmitting } = form.formState;
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const { email, password, name } = values;
-      const { data, error } = await authClient.signUp.email({
+      const { error } = await authClient.signUp.email({
         email: email,
         password: password,
         name: name,
@@ -40,7 +42,7 @@ export default function Register() {
 
       toast.success("User has been created successfully.");
       router.push("/admin/login");
-    } catch (error) {
+    } catch {
       toast.error("Failed to submit the form. Please try again.");
     }
   }
@@ -97,7 +99,16 @@ export default function Register() {
 
             <FieldError>{form.formState.errors.password?.message}</FieldError>
           </Field>
-          <Button type="submit">Submit</Button>
+          <Button type="submit" disabled={isSubmitting} className="cursor-pointer">
+            {isSubmitting ? (
+              <>
+                <SpinnerIcon className="h-4 w-4 animate-spin mr-2" />
+                <span>Registering...</span>
+              </>
+            ) : (
+              <span>Submit</span>
+            )}
+          </Button>
         </form>
       </FormProvider>
     </div>

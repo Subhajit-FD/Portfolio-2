@@ -2,7 +2,7 @@
 
 import { useRef, useMemo, useEffect, useState } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Image, Html } from "@react-three/drei";
+import { Image as DreiImage, Html } from "@react-three/drei";
 import * as THREE from "three";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -159,7 +159,7 @@ function CarouselCard({ url, position, rotation, isMobile }: CarouselCardProps) 
   const width = isMobile ? baseWidth : baseWidth;
 
   return (
-    <Image
+    <DreiImage
       url={url}
       position={position}
       rotation={rotation}

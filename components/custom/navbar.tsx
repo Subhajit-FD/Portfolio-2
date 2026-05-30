@@ -7,15 +7,14 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
 import { ThemeToggle } from "./theme-toggle";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight, X } from "@phosphor-icons/react";
+import { ISettings } from "@/lib/types";
 
-export default function Navbar() {
+export default function Navbar({ settings }: { settings?: ISettings | null }) {
   const pathname = usePathname();
   const links = [
     { id: 1, label: "Home", href: "/" },
@@ -25,11 +24,13 @@ export default function Navbar() {
   ];
 
   const socials = [
-    { id: 1, label: "X/Twitter", href: "#", icon: true },
-    { id: 2, label: "LinkedIn", href: "#", icon: true },
-    { id: 3, label: "Instagram", href: "#", icon: true },
-    { id: 4, label: "Behance", href: "#", icon: true },
-  ];
+    { id: 1, label: "X/Twitter", href: settings?.twitterUrl || "#", icon: true },
+    { id: 2, label: "LinkedIn", href: settings?.linkedinUrl || "#", icon: true },
+    { id: 3, label: "Instagram", href: settings?.instagramUrl || "#", icon: true },
+    { id: 4, label: "Behance", href: settings?.behanceUrl || "#", icon: true },
+  ].filter(s => s.href && s.href !== "#");
+
+  const email = settings?.email || "subhajitchoudhuryofficial@gmail.com";
 
   return (
     <div className="w-full flex items-center justify-between px-6 py-4 relative">
@@ -101,10 +102,10 @@ export default function Navbar() {
                     (Email)
                   </span>
                   <Link 
-                    href="mailto:subhajitchoudhuryofficial@gmail.com" 
+                    href={`mailto:${email}`} 
                     className="text-xs md:text-lg font-heading font-bold text-primary hover:underline underline-offset-8 decoration-2"
                   >
-                    subhajitchoudhuryofficial@gmail.com
+                    {email}
                   </Link>
                 </div>
 

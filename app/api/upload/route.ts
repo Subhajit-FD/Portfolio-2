@@ -35,8 +35,9 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ url: response.url });
-  } catch (error: any) {
-    console.error("Upload error:", error);
-    return NextResponse.json({ error: error.message || "Upload failed" }, { status: 500 });
+  } catch (error: unknown) {
+    const err = error as Error;
+    console.error("Upload error:", err);
+    return NextResponse.json({ error: err.message || "Upload failed" }, { status: 500 });
   }
 }

@@ -3,10 +3,20 @@
 import useDateAndTime from "@/lib/useDateAndTime";
 import TextScramble from "@/components/custom/text-scramble";
 import { ArrowUpRightIcon } from "@phosphor-icons/react";
+import { ISettings } from "@/lib/types";
 
-export default function Footer() {
+export default function Footer({ settings }: { settings?: ISettings | null }) {
   const { time, year } = useDateAndTime();
   const currentYear = year.toString();
+
+  const email = settings?.email || "subhajitchoudhuryofficial@gmail.com";
+  const socialLinks = [
+    { label: "INSTAGRAM", href: settings?.instagramUrl || "#" },
+    { label: "LINKEDIN", href: settings?.linkedinUrl || "#" },
+    { label: "GITHUB", href: settings?.githubUrl || "#" },
+    { label: "TWITTER/X", href: settings?.twitterUrl || "#" },
+    { label: "BEHANCE", href: settings?.behanceUrl || "#" },
+  ].filter(link => link.href && link.href !== "#");
 
   return (
     <footer className="w-full bg-background text-foreground px-6 py-10 md:px-12 md:py-16 border-t border-border overflow-hidden">
@@ -31,16 +41,18 @@ export default function Footer() {
           {/* Right Contact & Social */}
           <div className="flex flex-col gap-8 md:text-right md:items-end">
             <div className="flex flex-col gap-1">
-              <TextScramble className="text-lg md:text-4xl font-bold tracking-tight lowercase">
-                subhajitchoudhuryofficial@gmail.com
-              </TextScramble>
+              <a href={`mailto:${email}`} className="group">
+                <TextScramble className="text-lg md:text-4xl font-bold tracking-tight lowercase transition-opacity group-hover:opacity-60">
+                  {email}
+                </TextScramble>
+              </a>
             </div>
             
             <div className="flex flex-wrap gap-6 md:gap-10">
-              {["INSTAGRAM", "LINKEDIN"].map((social) => (
-                <a key={social} href="#" className="flex items-center gap-1 group border-b border-foreground/30 pb-0.5">
+              {socialLinks.map((social) => (
+                <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 group border-b border-foreground/30 pb-0.5">
                   <TextScramble className="text-sm font-mono tracking-widest group-hover:opacity-60">
-                    {social}
+                    {social.label}
                   </TextScramble>
                   <ArrowUpRightIcon size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </a>

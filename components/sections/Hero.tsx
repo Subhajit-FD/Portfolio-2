@@ -7,17 +7,19 @@ import { useGSAP } from "@gsap/react";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import gsap from "gsap";
+import { ISettings } from "@/lib/types";
 
 gsap.registerPlugin(useGSAP, ScrambleTextPlugin, ScrollTrigger);
 
 interface HeroProps {
   masterTl: gsap.core.Timeline;
+  settings?: ISettings | null;
 }
 
 const scrambleChars =
   "▙ ▚ ▞ a k i e d z e k ▝ ▀ ▖ ▜ ▛ ▟ ▙ ▚ ▞ ▝ ▀ ▖ a k i e d z e k";
 
-export default function Hero({ masterTl }: HeroProps) {
+export default function Hero({ masterTl, settings }: HeroProps) {
   const container = useRef<HTMLDivElement>(null);
   const profileCardRef = useRef<HTMLDivElement>(null);
   const innerCardRef = useRef<HTMLDivElement>(null);
@@ -50,7 +52,7 @@ export default function Hero({ masterTl }: HeroProps) {
       // — scramble all text refs together once card lands
       const scrambleTargets = [
         { ref: nameRef, text: "Subhajit" },
-        { ref: handleRef, text: "@filteredout.dev" },
+        { ref: handleRef, text: settings?.handle || "@filteredout.dev" },
         { ref: roleRef, text: "Full-stack developer" },
         { ref: locationRef, text: "Based in india" },
         { ref: scrollRef, text: "scroll down" },
@@ -142,13 +144,34 @@ export default function Hero({ masterTl }: HeroProps) {
     { dependencies: [masterTl] }, // Removed scope: container so #card-landing can be found globally
   );
 
+  // Dynamic scramble update for the handle when settings load
+  useGSAP(
+    () => {
+      if (settings?.handle && handleRef.current) {
+        if (handleRef.current.innerText !== settings.handle) {
+          gsap.to(handleRef.current, {
+            duration: 1,
+            ease: "none",
+            scrambleText: {
+              text: settings.handle,
+              chars: scrambleChars,
+              revealDelay: 0.1,
+              speed: 0.5,
+            },
+          });
+        }
+      }
+    },
+    { dependencies: [settings] }
+  );
+
   return (
     <div
       ref={container}
       className="relative flex h-dvh w-full flex-col overflow-visible"
     >
       <div ref={navbarRef} className="fixed top-0 left-0 w-full z-50">
-        <Navbar />
+        <Navbar settings={settings} />
       </div>
 
       <div ref={profileCardRef} className="relative z-30 h-full w-full flex-1">
