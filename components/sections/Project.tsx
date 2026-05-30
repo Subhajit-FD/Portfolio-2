@@ -2,7 +2,7 @@
 
 import { Canvas } from "@react-three/fiber";
 import CarouselScene from "../custom/carousel-scene";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 import PreviewGrid from "../custom/preview-grid";
 import gsap from "gsap";
 import { SplitText } from "gsap/SplitText";
@@ -62,11 +62,37 @@ export default function Project() {
     });
   };
 
+  const [projects, setProjects] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("/api/projects", { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setProjects(data);
+        }
+      })
+      .catch((e) => console.error("Error fetching projects:", e));
+  }, []);
+
+  const carouselProjects = useMemo(() => {
+    const featured = projects.filter((p) => p.featured);
+    if (featured.length = 4) {
+      return featured.slice(0, 4);
+    }
+    const nonFeatured = projects.filter((p) => !p.featured);
+    return [...featured, ...nonFeatured].slice(0, 4);
+  }, [projects]);
+
   return (
     <div ref={sectionRef} className="relative h-screen">
       {/* Canvas stays pinned within the section */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 pointer-events-none">
+        {/* Canvas container capturing click to trigger zoom */}
+        <div 
+          onClick={handleClick}
+          className="absolute inset-0 z-10 cursor-pointer"
+        >
           <Canvas
             camera={{ position: [0, 0, 18], fov: 50 }}
             style={{ pointerEvents: "auto" }}
@@ -74,24 +100,17 @@ export default function Project() {
             <CarouselScene
               activePreview={activePreview}
               scrollProgress={scrollProgress}
+              projects={carouselProjects}
+              titleRef={titleRef}
             />
           </Canvas>
-        </div>
-
-        <div className="relative z-10 flex h-full w-full items-center justify-center text-center">
-          <h1
-            ref={titleRef}
-            onClick={handleClick}
-            className="text-6xl text-white uppercase font-mono mix-blend-difference cursor-pointer"
-          >
-            Recent Works
-          </h1>
         </div>
       </div>
 
       <PreviewGrid
         isOpen={activePreview}
         onClose={() => setActivePreview(false)}
+        projects={projects}
       />
     </div>
   );

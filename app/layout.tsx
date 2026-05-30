@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "next-themes";
 import LenisSmoothScroll from "@/components/custom/lenis";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,6 +45,7 @@ export default function RootLayout({
         <ThemeProvider attribute={"class"} enableSystem>
           <LenisSmoothScroll />
           {children}
+          <Toaster position="bottom-right"/>
         </ThemeProvider>
       </body>
     </html>
