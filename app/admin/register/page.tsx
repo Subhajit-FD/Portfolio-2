@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
 import { EyeIcon, EyeClosedIcon } from "@phosphor-icons/react";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters long"),
@@ -17,6 +18,7 @@ const formSchema = z.object({
 });
 
 export default function Register() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,6 +39,7 @@ export default function Register() {
       }
 
       toast.success("User has been created successfully.");
+      router.push("/admin/login");
     } catch (error) {
       toast.error("Failed to submit the form. Please try again.");
     }

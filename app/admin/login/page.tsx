@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
 import { EyeIcon, EyeClosedIcon } from "@phosphor-icons/react";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -16,6 +17,7 @@ const formSchema = z.object({
 });
 
 export default function Login() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -34,7 +36,8 @@ export default function Login() {
         return;
       }
 
-      toast.success("User has been created successfully.");
+      toast.success("Logged in successfully.");
+      router.push("/admin");
     } catch (error) {
       toast.error("Failed to submit the form. Please try again.");
     }
