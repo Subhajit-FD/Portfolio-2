@@ -11,15 +11,31 @@ export async function GET() {
     await dbConnect();
     let settings = await Settings.findOne();
     if (!settings) {
-      settings = await Settings.create({
-        email: "subhajitchoudhuryofficial@gmail.com",
-        handle: "@filteredout.dev",
-        githubUrl: "https://github.com/Subhajit-FD",
-        linkedinUrl: "",
-        instagramUrl: "",
-        twitterUrl: "",
-        behanceUrl: "",
+      const session = await auth.api.getSession({
+        headers: await headers(),
       });
+      if (session) {
+        settings = await Settings.create({
+          email: "subhajitchoudhuryofficial@gmail.com",
+          handle: "@filteredout.dev",
+          githubUrl: "https://github.com/Subhajit-FD",
+          linkedinUrl: "",
+          instagramUrl: "",
+          twitterUrl: "",
+          behanceUrl: "",
+        });
+      } else {
+        // Return default values in-memory, but DO NOT save to database!
+        return NextResponse.json({
+          email: "subhajitchoudhuryofficial@gmail.com",
+          handle: "@filteredout.dev",
+          githubUrl: "https://github.com/Subhajit-FD",
+          linkedinUrl: "",
+          instagramUrl: "",
+          twitterUrl: "",
+          behanceUrl: "",
+        });
+      }
     }
     return NextResponse.json(settings);
   } catch (error: unknown) {

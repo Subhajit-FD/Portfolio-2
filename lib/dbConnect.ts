@@ -26,10 +26,8 @@ async function dbConnect(): Promise<void> {
 
     console.log("DB Connected");
   } catch (error) {
-    console.log("Database Connection Failed", error);
-    // Note: Be careful with process.exit(1) in serverless environments, 
-    // as it will kill the entire container instance.
-    process.exit(1); 
+    console.error("Database Connection Failed", error);
+    throw error;
   }
 }
 

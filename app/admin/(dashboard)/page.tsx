@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -116,7 +116,7 @@ export default function Admin() {
   }, [session, isSessionLoading, router]);
 
   // Fetch projects on load
-  const fetchProjects = async () => {
+  const fetchProjects = useCallback(async () => {
     try {
       setIsProjectsLoading(true);
       const res = await fetch("/api/projects", { cache: "no-store" });
@@ -129,9 +129,9 @@ export default function Admin() {
     } finally {
       setIsProjectsLoading(false);
     }
-  };
+  }, []);
 
-  const fetchSettings = async () => {
+  const fetchSettings = useCallback(async () => {
     try {
       setIsSettingsLoading(true);
       const res = await fetch("/api/settings");
@@ -150,7 +150,7 @@ export default function Admin() {
     } finally {
       setIsSettingsLoading(false);
     }
-  };
+  }, []);
 
   const handleSaveSettings = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -195,7 +195,7 @@ export default function Admin() {
       }, 0);
       return () => clearTimeout(timer);
     }
-  }, [session]);
+  }, [session, fetchProjects, fetchSettings]);
 
   // Pagination calculations
   const [currentPage, setCurrentPage] = useState(1);
@@ -839,7 +839,7 @@ export default function Admin() {
                         id="githubUrl"
                         placeholder="https://github.com/username/repo"
                         value={githubUrl}
-                        onChange={(e) => setUploadErrorIfRequired(e.target.value)}
+                        onChange={(e) => setGithubUrl(e.target.value)}
                       />
                     </Field>
                   </div>
@@ -1147,8 +1147,4 @@ export default function Admin() {
     </SidebarProvider>
   );
 
-  // Small inline handler helper
-  function setUploadErrorIfRequired(val: string) {
-    setGithubUrl(val);
-  }
 }
