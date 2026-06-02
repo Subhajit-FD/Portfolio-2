@@ -3,8 +3,9 @@ import type { NextRequest } from 'next/server';
 
 export function proxy(request: NextRequest) {
   // 1. Get the session/token (Better Auth stores it as better-auth.session_token)
+  // On HTTPS (production), the cookie name is __Secure-better-auth.session_token (capital S)
   const token = request.cookies.get('better-auth.session_token')?.value ||
-                request.cookies.get('__secure-better-auth.session_token')?.value; 
+                request.cookies.get('__Secure-better-auth.session_token')?.value; 
   const { pathname } = request.nextUrl;
 
   // 2. Define your logic conditions
