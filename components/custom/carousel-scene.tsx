@@ -5,7 +5,10 @@ import { useFrame } from "@react-three/fiber";
 import { Image as DreiImage, Html } from "@react-three/drei";
 import * as THREE from "three";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface ProjectItem {
   _id: string;
@@ -98,6 +101,28 @@ export default function CarouselScene({ activePreview, scrollProgress, projects 
       }
     },
     { dependencies: [activePreview] },
+  );
+
+  useGSAP(
+    () => {
+      gsap.fromTo(
+        ".title-char",
+        { yPercent: 100, opacity: 0 },
+        {
+          yPercent: 0,
+          opacity: 1,
+          stagger: 0.04,
+          duration: 0.8,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: "#recent-works-section",
+            start: "top 30%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    },
+    []
   );
 
   return (

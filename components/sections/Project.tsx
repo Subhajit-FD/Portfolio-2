@@ -43,24 +43,6 @@ export default function Project() {
           scrollProgress.current = self.progress;
         },
       });
-
-      // Bouncy staggered entrance animation for title characters when section triggers
-      gsap.fromTo(
-        ".title-char",
-        { yPercent: 100, opacity: 0 },
-        {
-          yPercent: 0,
-          opacity: 1,
-          stagger: 0.04,
-          duration: 0.8,
-          ease: "back.out(1.7)",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 30%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
     },
     { scope: sectionRef },
   );
@@ -115,7 +97,7 @@ export default function Project() {
   }, [projects]);
 
   return (
-    <div ref={sectionRef} className="relative h-screen">
+    <div id="recent-works-section" ref={sectionRef} className="relative h-screen">
       {/* Canvas stays pinned within the section */}
       <div className="absolute inset-0">
         {/* Canvas container capturing click to trigger zoom */}
