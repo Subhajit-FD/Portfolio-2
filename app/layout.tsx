@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
+import { GeistPixelSquare } from "geist/font/pixel";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "next-themes";
@@ -13,11 +14,6 @@ const geistSans = Geist({
 });
 
 const geistHeading = Geist({ subsets: ["latin"], variable: "--font-heading" });
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Subhajit | Portfolio",
@@ -36,8 +32,8 @@ export default function RootLayout({
         "h-full",
         "antialiased",
         geistSans.variable,
-        geistMono.variable,
         geistHeading.variable,
+        GeistPixelSquare.variable,
         "font-sans",
       )}
       suppressHydrationWarning

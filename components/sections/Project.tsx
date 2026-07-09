@@ -2,14 +2,13 @@
 
 import { Canvas } from "@react-three/fiber";
 import CarouselScene from "../custom/carousel-scene";
-import { useRef, useState, useEffect, useMemo } from "react";
-import PreviewGrid from "../custom/preview-grid";
+import { useRef, useState, useEffect, useMemo, Suspense } from "react";
+import { useRouter } from "next/navigation";
 import gsap from "gsap";
-import { SplitText } from "gsap/SplitText";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(SplitText, ScrollTrigger, useGSAP);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 interface ProjectItem {
   _id: string;
@@ -23,6 +22,7 @@ interface ProjectItem {
 }
 
 export default function Project() {
+  const router = useRouter();
   const [activePreview, setActivePreview] = useState(false);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -43,33 +43,52 @@ export default function Project() {
           scrollProgress.current = self.progress;
         },
       });
+
+      // Bouncy staggered entrance animation for title characters when section triggers
+      gsap.fromTo(
+        ".title-char",
+        { yPercent: 100, opacity: 0 },
+        {
+          yPercent: 0,
+          opacity: 1,
+          stagger: 0.04,
+          duration: 0.8,
+          ease: "back.out(1.7)",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 30%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
     },
     { scope: sectionRef },
   );
 
   const handleClick = () => {
-    const split = new SplitText(titleRef.current, {
-      type: "chars",
-      charsClass: "char",
-    });
+    const chars = gsap.utils.toArray<HTMLElement>(".title-char");
+    if (chars.length === 0) {
+      setActivePreview(true);
+      setTimeout(() => {
+        router.push("/works");
+      }, 1500);
+      return;
+    }
 
-    gsap.set(split.chars, {
-      display: "inline-block",
-    });
-
-    const tl = gsap.timeline({
-      onComplete: () => {
-        split.revert();
-        setActivePreview(true);
-      },
-    });
-
-    tl.to(split.chars, {
-      xPercent: -40,
+    gsap.killTweensOf(chars);
+    gsap.to(chars, {
+      yPercent: -100,
       opacity: 0,
-      stagger: 0.015,
-      duration: 0.4,
-      ease: "power2.inOut",
+      stagger: 0.02,
+      duration: 0.5,
+      ease: "power3.inOut",
+      onComplete: () => {
+        setActivePreview(true);
+        // Clean route push after cinematic transition
+        setTimeout(() => {
+          router.push("/works");
+        }, 1500);
+      },
     });
   };
 
@@ -108,21 +127,17 @@ export default function Project() {
             camera={{ position: [0, 0, 18], fov: 50 }}
             style={{ pointerEvents: "auto" }}
           >
-            <CarouselScene
-              activePreview={activePreview}
-              scrollProgress={scrollProgress}
-              projects={carouselProjects}
-              titleRef={titleRef}
-            />
+            <Suspense fallback={null}>
+              <CarouselScene
+                activePreview={activePreview}
+                scrollProgress={scrollProgress}
+                projects={carouselProjects}
+                titleRef={titleRef}
+              />
+            </Suspense>
           </Canvas>
         </div>
       </div>
-
-      <PreviewGrid
-        isOpen={activePreview}
-        onClose={() => setActivePreview(false)}
-        projects={projects}
-      />
     </div>
   );
 }

@@ -2,11 +2,28 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
-import { ReactLenis } from "lenis/react";
+import { ReactLenis, useLenis } from "lenis/react";
 import type { LenisRef } from "lenis/react";
 import "lenis/dist/lenis.css";
 
 gsap.registerPlugin(ScrollTrigger);
+
+const ScrollTriggerSync = () => {
+  const lenis = useLenis();
+
+  useEffect(() => {
+    if (!lenis) return;
+
+    lenis.on("scroll", ScrollTrigger.update);
+    ScrollTrigger.refresh();
+
+    return () => {
+      lenis.off("scroll", ScrollTrigger.update);
+    };
+  }, [lenis]);
+
+  return null;
+};
 
 const LenisSmoothScroll = () => {
   const lenisRef = useRef<LenisRef>(null);
@@ -17,11 +34,11 @@ const LenisSmoothScroll = () => {
     }
 
     gsap.ticker.add(update);
+    gsap.ticker.lagSmoothing(0);
 
-    // Refresh ScrollTrigger on mount (handles route changes)
-    ScrollTrigger.refresh();
-
-    return () => gsap.ticker.remove(update);
+    return () => {
+      gsap.ticker.remove(update);
+    };
   }, []);
 
   return (
@@ -34,7 +51,9 @@ const LenisSmoothScroll = () => {
         smoothWheel: true,
       }}
       ref={lenisRef}
-    />
+    >
+      <ScrollTriggerSync />
+    </ReactLenis>
   );
 };
 

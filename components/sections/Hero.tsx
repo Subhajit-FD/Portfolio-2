@@ -182,27 +182,27 @@ export default function Hero({ masterTl, settings }: HeroProps) {
 
       {/* Left text */}
       <div className="hero-side-text absolute top-1/2 left-20 hidden -translate-y-1/2 transform md:block">
-        <h2 className="font-heading text-5xl font-extrabold tracking-wider uppercase">
+        <h1 className="font-heading text-fluid-heading font-extrabold tracking-wider uppercase">
           <span ref={nameRef} />
-        </h2>
-        <p className="text-sm text-zinc-400">
+        </h1>
+        <p className="font-sans text-fluid-body text-zinc-400">
           <span ref={handleRef} />
         </p>
       </div>
 
       {/* Right text */}
       <div className="hero-side-text absolute top-1/2 right-10 hidden transform md:top-1/2 md:right-20 md:block md:-translate-y-1/2">
-        <h2 className="font-heading max-w-90 text-5xl font-extrabold tracking-wider uppercase">
+        <h2 className="font-subheading max-w-90 text-fluid-subheading font-bold tracking-wider uppercase">
           <span ref={roleRef} />
         </h2>
-        <p className="text-sm tracking-widest text-zinc-400 uppercase">
+        <p className="font-sans text-fluid-body tracking-widest text-zinc-400 uppercase">
           <span ref={locationRef} />
         </p>
       </div>
 
       {/* Scroll hint */}
       <div className="hero-side-text absolute bottom-10 left-1/2 -translate-x-1/2 transform">
-        <p className="text-center text-xs tracking-widest text-zinc-400 uppercase pl-[0.1em]">
+        <p className="text-center font-sans text-fluid-body tracking-widest text-zinc-400 uppercase pl-[0.1em]">
           <span ref={scrollRef} />
         </p>
       </div>

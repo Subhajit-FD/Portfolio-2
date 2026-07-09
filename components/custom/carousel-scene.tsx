@@ -111,12 +111,20 @@ export default function CarouselScene({ activePreview, scrollProgress, projects 
           pointerEvents="none"
           zIndexRange={[0, 5]}
         >
-          <h1
+          <h2
             ref={titleRef}
-            className="text-3xl md:text-5xl text-foreground uppercase font-mono text-nowrap select-none font-bold tracking-tight"
+            className="text-fluid-heading max-sm:text-2xl text-foreground uppercase font-heading text-nowrap select-none font-bold tracking-tight overflow-hidden pb-2"
           >
-            Recent Works
-          </h1>
+            {"Recent Works".split("").map((char, i) => (
+              <span
+                key={i}
+                className="title-char inline-block transform-gpu"
+                style={{ display: "inline-block" }}
+              >
+                {char === " " ? "\u00A0" : char}
+              </span>
+            ))}
+          </h2>
         </Html>
       )}
       <group ref={scrollGroupRef}>

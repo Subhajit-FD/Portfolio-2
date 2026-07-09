@@ -125,10 +125,10 @@ const handleMouseLeave = () => {
 
           {/* Footer */}
           <div className="flex items-center justify-between w-full px-3 ">
-            <p className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+            <span className="font-subheading text-[10px] uppercase tracking-wider text-muted-foreground">
               Coded by Subhajit.
-            </p>
-            <p className="font-mono text-[10px] text-muted-foreground">{year}</p>
+            </span>
+            <span className="font-subheading text-[10px] text-muted-foreground">{year}</span>
           </div>
         </div>
       </div>

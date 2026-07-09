@@ -19,8 +19,8 @@ export default function Navbar({ settings }: { settings?: ISettings | null }) {
   const links = [
     { id: 1, label: "Home", href: "/" },
     { id: 2, label: "Works", href: "/works" },
-    { id: 3, label: "About", href: "#about" },
-    { id: 4, label: "Contact", href: "#contact" },
+    { id: 3, label: "About", href: "/#about" },
+    { id: 4, label: "Contact", href: "/#contact" },
   ];
 
   const socials = [
@@ -36,14 +36,38 @@ export default function Navbar({ settings }: { settings?: ISettings | null }) {
     <div className="w-full flex items-center justify-between px-6 py-4 relative">
       <div className="uppercase font-heading font-extrabold tracking-wider text-xl">
         <Link href="/">
-          <h1>subhajit</h1>
+          <span>subhajit</span>
         </Link>
       </div>
       <div className="flex items-center gap-4">
+        {/* Desktop Navigation Menu */}
+        <nav className="hidden md:flex items-center gap-6 mr-2">
+          {links.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.id}
+                href={link.href}
+                className={cn(
+                  "font-subheading text-[11px] uppercase tracking-[0.2em] transition-colors relative py-1",
+                  isActive
+                    ? "text-primary font-bold"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                {link.label}
+                {isActive && (
+                  <span className="absolute bottom-0 left-0 w-full h-[1px] bg-primary animate-in fade-in zoom-in-50 duration-300" />
+                )}
+              </Link>
+            );
+          })}
+        </nav>
+
         <Sheet>
           <SheetTrigger
             render={
-              <Button variant={"outline"} className="flex items-center gap-2">
+              <Button variant={"outline"} className="flex md:hidden items-center gap-2">
                 <span>Menu</span>
               </Button>
             }

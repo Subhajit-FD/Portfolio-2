@@ -655,6 +655,7 @@ export default function Admin() {
                                     src={proj.desktopImage} 
                                     alt={`${proj.title} desktop`} 
                                     className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                    loading="lazy"
                                   />
                                 </div>
                               ) : (
@@ -670,6 +671,7 @@ export default function Admin() {
                                     src={proj.mobileImage} 
                                     alt={`${proj.title} mobile`} 
                                     className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                    loading="lazy"
                                   />
                                 </div>
                               ) : (
@@ -864,6 +866,7 @@ export default function Admin() {
                             src={desktopPreview} 
                             alt="Desktop preview" 
                             className="h-full w-full object-cover"
+                            loading="lazy"
                           />
                           
                           {/* Overlay Status */}
@@ -932,6 +935,7 @@ export default function Admin() {
                             src={mobilePreview} 
                             alt="Mobile preview" 
                             className="h-full w-full object-cover"
+                            loading="lazy"
                           />
                           
                           {/* Overlay Status */}

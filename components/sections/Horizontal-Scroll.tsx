@@ -136,7 +136,7 @@ const HorizontalScroll = () => {
       <div className="flex items-center min-h-screen overflow-hidden relative">
         <h2 
           ref={textRef}
-          className="uppercase text-9xl font-bold whitespace-nowrap leading-none pl-[150vw] pr-[20vw] md:pl-[80vw] md:pr-[10vw] flex items-center gap-[15vw] relative pointer-events-none z-20"
+          className="uppercase text-9xl font-heading font-bold whitespace-nowrap leading-none pl-[150vw] pr-[20vw] md:pl-[80vw] md:pr-[10vw] flex items-center gap-[15vw] relative pointer-events-none z-20"
         >
           <div className="flex items-baseline relative">
             {renderSplitText(splitChars1)}

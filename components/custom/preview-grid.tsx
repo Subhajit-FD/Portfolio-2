@@ -178,11 +178,11 @@ export default function PreviewGrid({ isOpen, onClose, projects = [] }: PreviewG
       className="fixed inset-0 z-50 px-[15vw] pt-20 pb-10 overflow-y-auto bg-background opacity-0 pointer-events-none"
     >
       <header className="flex justify-between mb-8">
-        <h2 className="text-2xl text-foreground font-mono uppercase">
+        <h3 className="text-fluid-subheading text-foreground font-subheading uppercase">
           Recent Works
-        </h2>
+        </h3>
 
-        <button onClick={onClose} className="text-foreground uppercase font-mono cursor-pointer">
+        <button onClick={onClose} className="text-foreground uppercase font-subheading cursor-pointer">
           Close ×
         </button>
       </header>
@@ -205,10 +205,10 @@ export default function PreviewGrid({ isOpen, onClose, projects = [] }: PreviewG
                 style={{ backgroundImage: `url(${item.imageUrl})` }}
               />
             </a>
-            <figcaption className="text-foreground font-mono mt-2 uppercase text-sm">
+            <figcaption className="text-foreground font-subheading mt-2 uppercase text-sm">
               {item.title}
               {item.tags.length > 0 && (
-                <span className="block text-xs text-muted-foreground mt-1 normal-case">
+                <span className="block text-xs text-muted-foreground mt-1 normal-case font-sans">
                   {item.tags.join(" · ")}
                 </span>
               )}

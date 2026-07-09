@@ -16,16 +16,22 @@ import { ISettings } from "@/lib/types";
 // Register the hook to prevent tree-shaking issues
 gsap.registerPlugin(useGSAP);
 
+let preloaderHasRun = false;
+
 export default function Page() {
   const container = useRef<HTMLElement>(null);
   const [masterTl, setMasterTl] = useState<gsap.core.Timeline | null>(null);
   const [settings, setSettings] = useState<ISettings | null>(null);
+  const [showPreloader, setShowPreloader] = useState(!preloaderHasRun);
 
   useEffect(() => {
     fetch("/api/settings")
       .then((res) => res.json())
       .then((data) => setSettings(data))
       .catch((err) => console.error("Error loading settings:", err));
+    
+    // Once mounted, mark preloader as having run for this session
+    preloaderHasRun = true;
   }, []);
 
   useGSAP(
@@ -51,7 +57,7 @@ export default function Page() {
     >
       {masterTl && (
         <>
-          <Preloader masterTl={masterTl} />
+          {showPreloader && <Preloader masterTl={masterTl} />}
           <Hero masterTl={masterTl} settings={settings} />
           <About />
           <HorizontalScroll />
